@@ -26,7 +26,7 @@ class Website:
         if not website.ok:
             raise RaceNotFound
         self.soup = BeautifulSoup(website.content, features="lxml")
-        self.details = details and self.has_details_view()
+        self.details = False  # details and self.has_details_view()
         if self.details:
             website = get_dynamic_content(f"{const.RACE_URL}{self.race_id}{const.DETAILS_PARAM}")
         else:

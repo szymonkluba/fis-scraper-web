@@ -35,6 +35,14 @@
             background-color: #eee;
         }
 
+        .forms__container--hide {
+            height: 0;
+        }
+
+        .forms__container--show {
+            height: min-content;
+        }
+
         .forms__title:first-child {
             border-top: 0;
             border-bottom: 1px solid #ababab;
@@ -44,6 +52,7 @@
 
         .forms__form-container {
             padding: 1rem;
+            transition: height 500ms ease-in-out;
         }
 
         .forms form {
@@ -92,7 +101,7 @@
 <h1>FIS Scraper</h1>
 <section class="forms">
     <h2 class="forms__title">Scrap single race</h2>
-    <div class="forms__form-container">
+    <div class="forms__form-container forms__container--show">
         <form id="form-single-race">
             <label for="fis_id-single-race">FIS ID:</label>
             <input id="fis_id-single-race" type="number"/>
@@ -105,7 +114,7 @@
         </form>
     </div>
     <h2 class="forms__title">Scrap listed IDs</h2>
-    <div class="forms__form-container">
+    <div class="forms__form-container forms__container--hide">
         <button class="forms__add-button"></button>
         <form id="form-list-races">
             <input class="forms__input-list" type="number">
@@ -117,7 +126,7 @@
         </form>
     </div>
     <h2 class="forms__title">Scrap range of IDs</h2>
-    <div class="forms__form-container">
+    <div class="forms__form-container forms__container--hide">
         <form id="form-list-races">
             <label for="from">From:</label>
             <input id="from" class="forms__input-range" type="number">
@@ -168,13 +177,11 @@
     const fisIDInput = document.getElementById("fis_id-single-race");
 
 
-    const formContainers = Array.from(document.getElementsByClassName("forms__form-container"))
-
-
     const showForms = (event) => {
         event.preventDefault()
-        for (const container in formContainers) {
-            container.classList.replace("forms__container-show", "forms__container--hide")
+        const formContainers = document.getElementsByClassName("forms__form-container")
+        for (let i = 0; i < formContainers.length; i++) {
+            formContainers[i].classList.replace("forms__container-show", "forms__container--hide")
         }
         event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container-show")
     }
@@ -182,7 +189,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         const formHeaders = document.querySelectorAll(".forms__title");
         console.log(formHeaders)
-        for (let i = 0; 1 < formHeaders.length; i++) {
+        for (let i = 0; i < formHeaders.length; i++) {
             formHeaders[i].addEventListener("click", showForms);
         }
     })
