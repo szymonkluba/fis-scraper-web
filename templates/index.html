@@ -5,6 +5,88 @@
     <meta charset="UTF-8">
     <title>FIS Scrapper</title>
     <link href="{% static 'styles.css' %}" rel="stylesheet">
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        *, *:before. *:after {
+            box-sizing: border-box;
+        }
+
+        .forms {
+            max-width: 40rem;
+            width: 100%;
+            padding: 0;
+            border: 1px solid #ababab;
+            border-radius: 1rem;
+        }
+
+        .forms__title {
+            border-top: 1px solid #ababab;
+            border-bottom: 1px solid #ababab;
+            padding: .5rem;
+            margin: 0;
+            background-color: #eee;
+        }
+
+        .forms__title:first-child {
+            border-top: 0;
+            border-bottom: 1px solid #ababab;
+            border-top-left-radius: 1rem;
+            border-top-right-radius: 1rem;
+        }
+
+        .forms__form-container {
+            padding: 1rem;
+        }
+
+        .forms form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .forms label {
+            font-size: .75rem;
+            color: #555;
+        }
+
+        .forms input[type="number"] {
+            padding: .5rem;
+            border-radius: .5rem;
+            margin-block: .5rem;
+            appearance: none;
+            border: 1px solid #ababab;
+        }
+
+        .forms input[type="submit"] {
+            padding: .5rem 1rem;
+            appearance: none;
+            border-radius: .5rem;
+            margin-top: 1rem;
+            background-color: transparent;
+            border: 1px solid cornflowerblue;
+            color: cornflowerblue;
+            font-weight: 900;
+        }
+
+        .forms input[type="submit"]:hover, .forms input[type="submit"]:focus {
+            outline: none;
+            background-color: cornflowerblue;
+            color: white;
+        }
+
+        #content {
+            padding: 1rem;
+            margin-block: 1rem;
+        }
+
+    </style>
 </head>
 <body>
 <h1>FIS Scraper</h1>
@@ -16,7 +98,8 @@
             <input id="fis_id-single-race" type="number"/>
             <div>
                 <input type="checkbox" id="details-single-race">
-                <label for="details-single-race">Detailed data (note that it may be not available for some races)</label>
+                <label for="details-single-race">Detailed data (note that it may be not available for some
+                    races)</label>
             </div>
             <input class="forms__submit-button" type="submit" value="Scrap!"/>
         </form>
@@ -49,6 +132,64 @@
     </div>
 </section>
 <section id="content"></section>
-<script src="{% static 'scripts.js' %}"></script>
+<script>
+
+    let race_id;
+
+    const onSubmit = (event) => {
+        event.preventDefault()
+        const url = "scrap_race/"
+
+        const body = {
+            race_id: fisIDInput.value,
+            details: true,
+        }
+
+        const config = {
+            method: "POST",
+            body: JSON.stringify(body),
+        }
+
+        fetch(url, config)
+            .then(response => response.json())
+            .then(data => {
+                const race = JSON.parse(data)[0];
+                race_id = race.pk;
+                const container = document.getElementById("content");
+                const button = document.createElement("a");
+                button.innerHTML = "Download";
+                button.href = `download/${race_id}/`;
+                container.appendChild(button);
+            })
+            .catch(e => console.log(e))
+    }
+
+    const form = document.getElementById("form-single-race");
+    const fisIDInput = document.getElementById("fis_id");
+
+
+    const formContainers = Array.from(document.getElementsByClassName("forms__form-container"))
+
+
+    const showForms = (event) => {
+        event.preventDefault()
+        for (const container in formContainers) {
+            container.classList.replace("forms__container-show", "forms__container--hide")
+        }
+        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container-show")
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const formHeaders = document.querySelectorAll(".forms__title");
+        console.log(formHeaders)
+        for (let i = 0; 1 < formHeaders.length; i++) {
+            formHeaders[i].addEventListener("click", showForms);
+        }
+    })
+
+    form.addEventListener("submit", onSubmit)
+
+
+</script>
 </body>
 </html>
