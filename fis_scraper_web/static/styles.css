@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body {
+    margin: 0;
+    padding: 2rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+*, *:before. *:after {
+    box-sizing: border-box;
+}
+
+.forms {
+    max-width: 40rem;
+    width: 100%;
+    padding: 0;
+    border: 1px solid #ababab;
+    border-radius: 1rem;
+}
+
+.forms__title {
+    border-top: 1px solid #ababab;
+    border-bottom: 1px solid #ababab;
+    padding: .5rem;
+    margin: 0;
+    background-color: #eee;
+}
+
+.forms__title:first-child {
+    border-top: 0;
+    border-bottom: 1px solid #ababab;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.forms__form-container {
+    padding: 1rem;
+}
+
+.forms form {
+    display: flex;
+    flex-direction: column;
+}
+
+.forms label {
+    font-size: .75rem;
+    color: #555;
+}
+
+.forms input[type="number"] {
+    padding: .5rem;
+    border-radius: .5rem;
+    margin-block: .5rem;
+    appearance: none;
+    border: 1px solid #ababab;
+}
+
+.forms input[type="submit"] {
+    padding: .5rem 1rem;
+    appearance: none;
+    border-radius: .5rem;
+    margin-top: 1rem;
+    background-color: transparent;
+    border: 1px solid cornflowerblue;
+    color: cornflowerblue;
+    font-weight: 900;
+}
+
+.forms input[type="submit"]:hover, .forms input[type="submit"]:focus {
+    outline: none;
+    background-color: cornflowerblue;
+    color: white;
+}
+
+#content {
+    padding: 1rem;
+    margin-block: 1rem;
+}

@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FIS Scrapper</title>
+    <link href="{% static 'styles.css' %}" rel="stylesheet">
+</head>
+<body>
+<h1>FIS Scraper</h1>
+<section class="forms">
+    <h2 class="forms__title">Scrap single race</h2>
+    <div class="forms__form-container">
+        <form id="form-single-race">
+            <label for="fis_id-single-race">FIS ID:</label>
+            <input id="fis_id-single-race" type="number"/>
+            <div>
+                <input type="checkbox" id="details-single-race">
+                <label for="details-single-race">Detailed data (note that it may be not available for some races)</label>
+            </div>
+            <input class="forms__submit-button" type="submit" value="Scrap!"/>
+        </form>
+    </div>
+    <h2 class="forms__title">Scrap listed IDs</h2>
+    <div class="forms__form-container">
+        <button class="forms__add-button"></button>
+        <form id="form-list-races">
+            <input class="forms__input-list" type="number">
+            <div>
+                <input type="checkbox" id="details-list-race">
+                <label for="details-list-race">Detailed data (note that it may be not available for some races)</label>
+            </div>
+            <input class="forms__submit-button" type="submit" value="Scrap!"/>
+        </form>
+    </div>
+    <h2 class="forms__title">Scrap range of IDs</h2>
+    <div class="forms__form-container">
+        <form id="form-list-races">
+            <label for="from">From:</label>
+            <input id="from" class="forms__input-range" type="number">
+            <label for="to">To:</label>
+            <input id="to" class="forms__input-range" type="number">
+            <div>
+                <input type="checkbox" id="details-range-race">
+                <label for="details-range-race">Detailed data (note that it may be not available for some races)</label>
+            </div>
+            <input class="forms__submit-button" type="submit" value="Scrap!"/>
+        </form>
+    </div>
+</section>
+<section id="content"></section>
+<script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>
