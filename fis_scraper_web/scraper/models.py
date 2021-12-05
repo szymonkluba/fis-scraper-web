@@ -1,3 +1,4 @@
+import uuid as uuid
 from django.db import models
 
 RACE_KINDS = (
@@ -16,6 +17,8 @@ class Tournament(models.Model):
 
 
 class Race(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    fis_id = models.PositiveIntegerField(default=0)
     place = models.CharField(max_length=50)
     tournament = models.ForeignKey("Tournament", related_name="races", on_delete=models.CASCADE)
     date = models.DateField()
@@ -37,6 +40,10 @@ class Jumper(models.Model):
 
 
 class Country(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Countries"
+
     fis_code = models.PositiveIntegerField(null=True, blank=True)
     name = models.CharField(max_length=50)
 
@@ -83,7 +90,7 @@ class Participant(models.Model):
         related_name="second_jumps",
         on_delete=models.CASCADE
     )
-    race = models.ForeignKey("Race", on_delete=models.CASCADE)
+    race = models.ForeignKey("Race", on_delete=models.CASCADE, to_field="uuid")
     total_points = models.FloatField(null=True, blank=True)
     diff = models.FloatField(null=True, blank=True)
     disqualified = models.BooleanField(default=False)
@@ -97,6 +104,10 @@ class Participant(models.Model):
 
 
 class ParticipantCountry(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Participant countries"
+
     rank = models.PositiveIntegerField(null=True, blank=True)
     country = models.ForeignKey("Country", related_name="participated_countries", on_delete=models.CASCADE)
     race = models.ForeignKey("Race", on_delete=models.CASCADE)

@@ -9,5 +9,10 @@ DATE_SELECTOR = ".date__full"
 KIND_SELECTOR = ".event-header__kind"
 ROW_SIMPLE_SELECTOR = "#ajx_results .g-row"
 ROW_DETAILED_SELECTOR = "#ajx_details .g-row"
+COUNTRY_SELECTOR = ".country__name-short"
+
+ENTRIES_DETAILS_SELECTOR = 'div.g-row.bb-xs'
+ENTRIES_SIMPLE_SELECTOR = 'div.g-row.justify-sb'
+ENTRIES_INDIVIDUAL_SELECTOR = "div"
 
 DETAILS_SELECTOR = "#lnk_details"
