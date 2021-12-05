@@ -36,11 +36,11 @@
         }
 
         .forms__container--hide, .forms__container--hide * {
-            height: 0;
+            visibility: collapse;
         }
 
         .forms__container--show, .forms__container--show * {
-            height: min-content;
+            visibility: visible;
         }
 
         .forms__title:first-child {
@@ -52,7 +52,11 @@
 
         .forms__form-container {
             padding: 1rem;
-            transition: height 500ms ease-in-out;
+            transition: visibility 500ms;
+        }
+
+        .forms__form-container * {
+            transition: visibility 500ms;
         }
 
         .forms form {
