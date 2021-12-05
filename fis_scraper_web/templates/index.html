@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FIS Scrapper</title>
+</head>
+<body>
+    <form id="form">
+        <label for="fis_id">FIS ID:</label>
+        <input id="fis_id" type="number" />
+        <input type="submit" />
+    </form>
+    <script>
+        const onSubmit = (event) => {
+            event.preventDefault()
+            const url = "scrap_race/"
+
+            const body = {
+                race_id: fisIDInput.value,
+                details: true,
+            }
+
+            const config = {
+                method: "POST",
+                body: JSON.stringify(body),
+            }
+
+            fetch(url, config)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(e => console.log(e))
+        }
+
+        const form = document.getElementById("form");
+        const fisIDInput = document.getElementById("fis_id");
+
+        form.addEventListener("submit", onSubmit)
+    </script>
+</body>
+</html>
