@@ -35,11 +35,11 @@
             background-color: #eee;
         }
 
-        .forms__container--hide {
+        .forms__container--hide, .forms__container--hide * {
             height: 0;
         }
 
-        .forms__container--show {
+        .forms__container--show, .forms__container--show * {
             height: min-content;
         }
 
@@ -181,9 +181,9 @@
         event.preventDefault()
         const formContainers = document.getElementsByClassName("forms__form-container")
         for (let i = 0; i < formContainers.length; i++) {
-            formContainers[i].classList.replace("forms__container-show", "forms__container--hide")
+            formContainers[i].classList.replace("forms__container--show", "forms__container--hide")
         }
-        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container-show")
+        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container--show")
     }
 
     document.addEventListener("DOMContentLoaded", () => {
