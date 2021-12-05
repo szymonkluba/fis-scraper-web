@@ -142,7 +142,7 @@ def generate_simple_participants(website, race):
             entries = list(map(website.get_text, line.select(const.ENTRIES_INDIVIDUAL_SELECTOR)))
             country, _ = Country.objects.get_or_create(**maps.map_jumper_country_simple(entries))
             jumper_details = maps.map_simple_jumper(entries)
-            jumper, _ = Jumper.objects.update_or_create(name=jumper_details.name,
+            jumper, _ = Jumper.objects.update_or_create(name=jumper_details["name"],
                                                         defaults={"nation": country, **jumper_details})
             jump_1_details, jump_2_details = maps.map_simple_jump(entries)
             if jump_1_details:
