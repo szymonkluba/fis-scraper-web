@@ -183,6 +183,7 @@ def export_csv(queryset, output):
                 for field_name in [field.name for field in Jump._meta.fields if field.name != "id"]:
                     if field_name != "id":
                         values.append(getattr(value, field_name))
+                continue
             if value is None:
                 value = ''
             if (field == "jump_1" and value == "") or (field == "jump_2" and value == ""):
