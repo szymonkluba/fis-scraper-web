@@ -137,7 +137,6 @@ def generate_detail_participants(website, race):
 
 def generate_simple_participants(website, race):
     rows = website.get_rows()
-    print(rows)
     for row in rows:
         for line in row.select(const.ENTRIES_SIMPLE_SELECTOR):
             jump_1, jump_2 = None, None
@@ -174,7 +173,6 @@ def export_csv(queryset, output):
             headers.extend([f.name for f in Jump._meta.fields])
         else:
             headers.append(field_name)
-    print(headers)
     writer = csv.writer(output, dialect="excel")
     writer.writerow(headers)
     for row in queryset:
