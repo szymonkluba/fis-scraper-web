@@ -169,10 +169,11 @@
     let race_id;
 
     const onSubmit = (event) => {
-        event.preventDefault()
-        const url = "scrap_race/"
+        event.preventDefault();
+        const url = "scrap_race/";
         const submitButton = document.getElementById("submit");
         submitButton.disabled = true;
+        event.target.removeEventListener("submit", onSubmit);
 
         const body = {
             race_id: fisIDInput.value,
@@ -191,6 +192,7 @@
                 race_id = race.pk;
                 console.log(race)
                 submitButton.disabled = false;
+                event.target.addEventListener("submit", onSubmit)
                 const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
                 const container = document.getElementById("content");
                 const button = document.createElement("a");
