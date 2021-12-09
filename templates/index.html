@@ -133,7 +133,7 @@
                 <label for="details-single-race">Detailed data (note that it may be not available for some
                     races)</label>
             </div>
-            <input class="forms__submit-button" type="submit" value="Scrap!"/>
+            <input id="submit" class="forms__submit-button" type="submit" value="Scrap!"/>
         </form>
     </div>
     <h2 class="forms__title">Scrap listed IDs</h2>
@@ -171,6 +171,8 @@
     const onSubmit = (event) => {
         event.preventDefault()
         const url = "scrap_race/"
+        const submitButton = document.getElementById("submit");
+        submitButton.disabled = true;
 
         const body = {
             race_id: fisIDInput.value,
@@ -188,6 +190,7 @@
                 const race = JSON.parse(data)[0];
                 race_id = race.pk;
                 console.log(race)
+                submitButton.disabled = false;
                 const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
                 const container = document.getElementById("content");
                 const button = document.createElement("a");
