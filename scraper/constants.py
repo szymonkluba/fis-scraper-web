@@ -16,3 +16,19 @@ ENTRIES_SIMPLE_SELECTOR = 'div.g-row.justify-sb'
 ENTRIES_INDIVIDUAL_SELECTOR = "div"
 
 DETAILS_SELECTOR = "#lnk_details"
+
+EMPTY_JUMP_DETAILS = {
+        "distance_points": None,
+        "speed": None,
+        "judge_a": None,
+        "judge_b": None,
+        "judge_c": None,
+        "judge_d": None,
+        "judge_e": None,
+        "judge_points": None,
+        "gate": None,
+        "gate_points": None,
+        "wind": None,
+        "wind_points": None,
+        "rank": None,
+}

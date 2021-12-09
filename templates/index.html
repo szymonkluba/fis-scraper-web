@@ -36,13 +36,13 @@
         }
 
         .forms__container--hide, .forms__container--hide * {
+            visibility: hidden;
             height: 0;
-            visibility: collapse;
         }
 
         .forms__container--show, .forms__container--show * {
-            height: min-content;
             visibility: visible;
+            height: min-content;
         }
 
         .forms__title:first-child {
@@ -54,10 +54,6 @@
 
         .forms__form-container {
             padding: 1rem;
-            transition: visibility 500ms ease-in-out;
-        }
-
-        .forms__form-container * {
             transition: visibility 500ms ease-in-out;
         }
 
@@ -101,6 +97,27 @@
             margin-block: 1rem;
         }
 
+        .download__link {
+            padding: .5rem 1.5rem;
+            appearance: none;
+            text-decoration: none;
+            color: cornflowerblue;
+            font-size: 1.5rem;
+            border: 2px solid cornflowerblue;
+            border-radius: 1rem;
+        }
+
+        .download__link::after {
+            content: "\2398";
+            margin-left: 1rem;
+        }
+
+        .download__link:hover, .download__link:focus {
+            outline: none;
+            color: white;
+            background-color: cornflowerblue;
+        }
+
     </style>
 </head>
 <body>
@@ -133,7 +150,7 @@
     </div>
     <h2 class="forms__title">Scrap range of IDs</h2>
     <div class="forms__form-container forms__container--hide">
-        <form id="form-list-races">
+        <form id="form-range-races">
             <label for="from">From:</label>
             <input id="from" class="forms__input-range" type="number">
             <label for="to">To:</label>
@@ -157,7 +174,7 @@
 
         const body = {
             race_id: fisIDInput.value,
-            details: true,
+            details: document.getElementById("details-single-race").checked,
         }
 
         const config = {
@@ -170,10 +187,13 @@
             .then(data => {
                 const race = JSON.parse(data)[0];
                 race_id = race.pk;
+                console.log(race)
+                const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
                 const container = document.getElementById("content");
                 const button = document.createElement("a");
-                button.innerHTML = "Download";
+                button.innerHTML = race_name;
                 button.href = `download/${race_id}/`;
+                button.className = "download__link"
                 container.appendChild(button);
             })
             .catch(e => console.log(e))

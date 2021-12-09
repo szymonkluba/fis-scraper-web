@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup, Tag
 from django.http import HttpResponse, StreamingHttpResponse
 
 from . import constants as const, maps
+from .constants import EMPTY_JUMP_DETAILS
 from .models import Country, Jumper, Jump, Participant, ParticipantCountry
 from .sele import get_dynamic_content
 
@@ -26,7 +27,7 @@ class Website:
         if not website.ok:
             raise RaceNotFound
         self.soup = BeautifulSoup(website.content, features="lxml")
-        self.details = False  # details and self.has_details_view()
+        self.details = details and self.has_details_view()
         if self.details:
             website = get_dynamic_content(f"{const.RACE_URL}{self.race_id}{const.DETAILS_PARAM}")
         else:
@@ -136,6 +137,7 @@ def generate_detail_participants(website, race):
 
 def generate_simple_participants(website, race):
     rows = website.get_rows()
+    print(rows)
     for row in rows:
         for line in row.select(const.ENTRIES_SIMPLE_SELECTOR):
             jump_1, jump_2 = None, None
@@ -146,9 +148,9 @@ def generate_simple_participants(website, race):
                                                         defaults={"nation": country, **jumper_details})
             jump_1_details, jump_2_details = maps.map_simple_jump(entries)
             if jump_1_details:
-                jump_1, _ = Jump.objects.get_or_create(**jump_1_details)
+                jump_1, _ = Jump.objects.get_or_create(**jump_1_details, **EMPTY_JUMP_DETAILS)
             if jump_2_details:
-                jump_2, _ = Jump.objects.get_or_create(**jump_2_details)
+                jump_2, _ = Jump.objects.get_or_create(**jump_2_details, **EMPTY_JUMP_DETAILS)
             Participant.objects.get_or_create(jumper=jumper, jump_1=jump_1, jump_2=jump_2, race=race,
                                               **maps.map_other_params_simple(entries))
 
@@ -156,7 +158,7 @@ def generate_simple_participants(website, race):
 def generate_participants(website, race):
     if website.is_team():
         generate_team_participants(website, race)
-    elif website.has_details_view():
+    elif website.details:
         generate_detail_participants(website, race)
     else:
         generate_simple_participants(website, race)

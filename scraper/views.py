@@ -21,6 +21,7 @@ def scrap_race(request):
 
         race_id = body.get("race_id")
         details = body.get("details")
+        print(details)
 
         if race_id:
 
