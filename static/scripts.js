@@ -1,12 +1,15 @@
 let race_id;
 
 const onSubmit = (event) => {
-    event.preventDefault()
-    const url = "scrap_race/"
+    event.preventDefault();
+    const url = "scrap_race/";
+    const submitButton = document.getElementById("submit");
+    submitButton.disabled = true;
+    event.target.removeEventListener("submit", onSubmit);
 
     const body = {
         race_id: fisIDInput.value,
-        details: true,
+        details: document.getElementById("details-single-race").checked,
     }
 
     const config = {
@@ -19,36 +22,39 @@ const onSubmit = (event) => {
         .then(data => {
             const race = JSON.parse(data)[0];
             race_id = race.pk;
+            console.log(race)
+            submitButton.disabled = false;
+            event.target.addEventListener("submit", onSubmit)
+            const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
             const container = document.getElementById("content");
             const button = document.createElement("a");
-            button.innerHTML = "Download";
+            button.innerHTML = race_name;
             button.href = `download/${race_id}/`;
+            button.className = "download__link"
             container.appendChild(button);
         })
         .catch(e => console.log(e))
 }
 
 const form = document.getElementById("form-single-race");
-const fisIDInput = document.getElementById("fis_id");
-
-
-const formContainers = Array.from(document.getElementsByClassName("forms__form-container"))
+const fisIDInput = document.getElementById("fis_id-single-race");
 
 
 const showForms = (event) => {
     event.preventDefault()
-    for (const container in formContainers) {
-        container.classList.replace("forms__container-show", "forms__container--hide")
+    const formContainers = document.getElementsByClassName("forms__form-container")
+    for (let i = 0; i < formContainers.length; i++) {
+        formContainers[i].classList.replace("forms__container--show", "forms__container--hide")
     }
-        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container-show")
+    event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container--show")
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     const formHeaders = document.querySelectorAll(".forms__title");
     console.log(formHeaders)
-    for (let i = 0; 1 < formHeaders.length; i++) {
-    formHeaders[i].addEventListener("click", showForms);
-}
+    for (let i = 0; i < formHeaders.length; i++) {
+        formHeaders[i].addEventListener("click", showForms);
+    }
 })
 
 form.addEventListener("submit", onSubmit)

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>FIS Scrapper</title>
     <link href="{% static 'styles.css' %}" rel="stylesheet">
-    <style>
+    <!--<style>
 
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -35,12 +35,12 @@
             background-color: #eee;
         }
 
-        .forms__container--hide, .forms__container--hide * {
+        .forms__container&#45;&#45;hide, .forms__container&#45;&#45;hide * {
             visibility: hidden;
             height: 0;
         }
 
-        .forms__container--show, .forms__container--show * {
+        .forms__container&#45;&#45;show, .forms__container&#45;&#45;show * {
             visibility: visible;
             height: min-content;
         }
@@ -118,7 +118,7 @@
             background-color: cornflowerblue;
         }
 
-    </style>
+    </style>-->
 </head>
 <body>
 <h1>FIS Scraper</h1>
@@ -164,7 +164,7 @@
     </div>
 </section>
 <section id="content"></section>
-<script>
+<!--<script>
 
     let race_id;
 
@@ -212,9 +212,9 @@
         event.preventDefault()
         const formContainers = document.getElementsByClassName("forms__form-container")
         for (let i = 0; i < formContainers.length; i++) {
-            formContainers[i].classList.replace("forms__container--show", "forms__container--hide")
+            formContainers[i].classList.replace("forms__container&#45;&#45;show", "forms__container&#45;&#45;hide")
         }
-        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container--show")
+        event.target.nextElementSibling.classList.replace("forms__container&#45;&#45;hide", "forms__container&#45;&#45;show")
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -228,6 +228,6 @@
     form.addEventListener("submit", onSubmit)
 
 
-</script>
+</script>-->
 </body>
 </html>

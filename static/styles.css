@@ -26,6 +26,16 @@ body {
     background-color: #eee;
 }
 
+.forms__container--hide, .forms__container--hide * {
+    visibility: hidden;
+    height: 0;
+}
+
+.forms__container--show, .forms__container--show * {
+    visibility: visible;
+    height: min-content;
+}
+
 .forms__title:first-child {
     border-top: 0;
     border-bottom: 1px solid #ababab;
@@ -35,6 +45,7 @@ body {
 
 .forms__form-container {
     padding: 1rem;
+    transition: visibility 500ms ease-in-out;
 }
 
 .forms form {
@@ -75,4 +86,25 @@ body {
 #content {
     padding: 1rem;
     margin-block: 1rem;
+}
+
+.download__link {
+    padding: .5rem 1.5rem;
+    appearance: none;
+    text-decoration: none;
+    color: cornflowerblue;
+    font-size: 1.5rem;
+    border: 2px solid cornflowerblue;
+    border-radius: 1rem;
+}
+
+.download__link::after {
+    content: "\2398";
+    margin-left: 1rem;
+}
+
+.download__link:hover, .download__link:focus {
+    outline: none;
+    color: white;
+    background-color: cornflowerblue;
 }
