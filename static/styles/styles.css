@@ -2,12 +2,57 @@
 
 body {
     margin: 0;
-    padding: 2rem;
+    padding: 0;
     font-family: 'Montserrat', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+    width: 100vw;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-*, *:before. *:after {
+*, *:before, *:after {
     box-sizing: border-box;
+}
+
+main {
+    display: flex;
+    padding: 1rem;
+    height: 100%;
+}
+
+header {
+    display: flex;
+}
+
+nav {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 40rem;
+    padding-block: 2rem;
+}
+
+footer {
+    display: flex;
+}
+
+footer p {
+    width: 100%;
+    max-width: 40rem;
+    margin-inline: auto;
+    text-align: center;
+}
+
+h2 {
+    margin: 0;
+}
+
+#scraper {
+    margin-inline: auto;
+    max-width: 40rem;
+    width: 100%;
 }
 
 .forms {
@@ -16,6 +61,7 @@ body {
     padding: 0;
     border: 1px solid #ababab;
     border-radius: 1rem;
+    background-color: white;
 }
 
 .forms__title {
@@ -35,11 +81,13 @@ body {
 .forms__container--hide {
     max-height: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .forms__container--show {
-    max-height: 20rem;
+    max-height: 100rem;
     padding: 1rem;
+    overflow: visible;
 }
 
 .forms__title:first-child {
@@ -51,8 +99,14 @@ body {
 
 .forms__form-container {
     transition: max-height 250ms linear, padding 250ms linear;
-    overflow: hidden;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+}
+
+.forms__inputs-wrapper {
+    height: max-content;
 }
 
 .forms form {
@@ -63,6 +117,8 @@ body {
 .forms label {
     font-size: .75rem;
     color: #555;
+    display: block;
+    width: 100%;
 }
 
 .forms input[type="number"] {
@@ -71,6 +127,8 @@ body {
     margin-block: .5rem;
     appearance: none;
     border: 1px solid #ababab;
+    display: block;
+    width: 100%;
 }
 
 .forms input[type="submit"] {
@@ -90,12 +148,46 @@ body {
     color: white;
 }
 
-#content {
+.forms__add-button {
+    padding: .5rem;
+    appearance: none;
+    border-radius: .5rem;
+    margin-left: auto;
+    background-color: transparent;
+    border: 1px solid forestgreen;
+    color: forestgreen;
+    font-weight: 900;
+}
+
+.forms__add-button:hover {
+    outline: none;
+    background-color: forestgreen;
+    color: white;
+}
+
+#files {
+    box-sizing: border-box;
     padding: 1rem;
     margin-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #ababab;
+    border-radius: 1rem;
+    min-height: 10rem;
+    max-width: 40rem;
+    background-color: white;
+}
+
+#files-container {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
 }
 
 .download__link {
+    display: flex;
+    box-sizing: border-box;
     padding: .5rem 1.5rem;
     appearance: none;
     text-decoration: none;
@@ -103,11 +195,12 @@ body {
     font-size: 1.5rem;
     border: 2px solid cornflowerblue;
     border-radius: 1rem;
+    width: 100%;
 }
 
 .download__link::after {
     content: "\2398";
-    margin-left: 1rem;
+    margin-left: auto;
 }
 
 .download__link:hover, .download__link:focus {

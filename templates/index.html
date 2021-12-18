@@ -3,56 +3,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIS Scrapper</title>
     <link href="{% static 'styles\styles.css' %}" rel="stylesheet">
     <script src="{% static 'scripts\toggle-forms.js' %}"></script>
     <script src="{% static 'scripts\scrap-single-race.js' %}"></script>
+    <script src="{% static 'scripts\add-inputs.js' %}"></script>
+    <script src="{% static 'scripts\scrap-races-list.js' %}"></script>
+    <script src="{% static 'scripts\scrap-races-range.js' %}"></script>
 </head>
 <body>
-<h1>FIS Scraper</h1>
-<section class="forms">
-    <h2 class="forms__title">Scrap single race</h2>
-    <div class="forms__form-container forms__container--show">
-        <form id="form-single-race">
-            <label for="fis_id-single-race">FIS ID:</label>
-            <input id="fis_id-single-race" type="number" required/>
-            <div>
-                <input type="checkbox" id="details-single-race" checked>
-                <label for="details-single-race">Detailed data (note that it may be not available for some
-                    races)</label>
+<header>
+    <nav>
+        <a href="#">FIS scraper</a>
+        <a href="#">Archive</a>
+    </nav>
+</header>
+<main>
+    <div id="scraper">
+        <h1>FIS Scraper</h1>
+        <section class="forms">
+
+            <h2 class="forms__title">Scrap single race</h2>
+
+            <div class="forms__form-container forms__container--show">
+
+                <form id="form-single-race">
+
+                    <label for="fis_id-single-race">FIS ID:</label>
+                    <input id="fis_id-single-race" type="number" required/>
+
+                    <div>
+                        <input type="checkbox" id="details-single-race" checked>
+                        <label for="details-single-race">Detailed data (note that it may be not available for some
+                            races)</label>
+                    </div>
+
+                    <input id="submit-single" class="forms__submit-button" type="submit" value="Scrap!"/>
+
+                </form>
+
             </div>
-            <input id="submit" class="forms__submit-button" type="submit" value="Scrap!"/>
-        </form>
-    </div>
-    <h2 class="forms__title">Scrap listed IDs</h2>
-    <div class="forms__form-container forms__container--hide">
-        <button id="add-inputs" class="forms__add-button">Add</button>
-        <div id="inputs_wrapper" class="forms__inputs-wrapper">
-            <label for="race_id_1">1# FIS ID:</label>
-            <input id="race_id_1" class="forms__input-list" type="number" required>
-        </div>
-        <div>
-            <input type="checkbox" id="details-list-race">
-            <label for="details-list-race">Detailed data (note that it may be not available for some races)</label>
-        </div>
-        <input class="forms__submit-button" type="submit" value="Scrap!"/>
-        </form>
-    </div>
-    <h2 class="forms__title">Scrap range of IDs</h2>
-    <div class="forms__form-container forms__container--hide">
-        <form id="form-range-races">
-            <label for="from">From:</label>
-            <input id="from" class="forms__input-range" type="number" required>
-            <label for="to">To:</label>
-            <input id="to" class="forms__input-range" type="number" required>
-            <div>
-                <input type="checkbox" id="details-range-race">
-                <label for="details-range-race">Detailed data (note that it may be not available for some races)</label>
+
+            <h2 class="forms__title">Scrap listed IDs</h2>
+
+            <div class="forms__form-container forms__container--hide">
+
+                <form id="form-list-races">
+
+                    <button id="add-inputs" class="forms__add-button">Add</button>
+
+                    <div id="inputs-wrapper" class="forms__inputs-wrapper">
+                        <label for="race_id_1">1# FIS ID:</label>
+                        <input id="race_id_1" class="forms__input-list" type="number" required>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="details-list-race" checked>
+                        <label for="details-list-race">Detailed data (note that it may be not available for some
+                            races)</label>
+                    </div>
+
+                    <input id="submit-list" class="forms__submit-button" type="submit" value="Scrap!"/>
+
+                </form>
+
             </div>
-            <input class="forms__submit-button" type="submit" value="Scrap!"/>
-        </form>
+
+            <h2 class="forms__title">Scrap range of IDs</h2>
+
+            <div class="forms__form-container forms__container--hide">
+                <form id="form-range-races">
+
+                    <label for="from">From:</label>
+                    <input id="from" class="forms__input-range" type="number" required>
+                    <label for="to">To:</label>
+                    <input id="to" class="forms__input-range" type="number" required>
+
+                    <div>
+                        <input type="checkbox" id="details-range-race" checked>
+                        <label for="details-range-race">Detailed data (note that it may be not available for some
+                            races)</label>
+                    </div>
+
+                    <input id="submit-range" class="forms__submit-button" type="submit" value="Scrap!"/>
+
+                </form>
+            </div>
+
+        </section>
+        <section id="files">
+            <h2>Your files</h2>
+            <div id="files-container"></div>
+        </section>
     </div>
-</section>
-<section id="content"></section>
+</main>
+<footer>
+    <p>
+        &copy; SK 2021
+    </p>
+</footer>
 </body>
 </html>
