@@ -22,18 +22,24 @@ body {
     border-top: 1px solid #ababab;
     border-bottom: 1px solid #ababab;
     padding: .5rem;
+    border-radius: 1rem;
     margin: 0;
     background-color: #eee;
+    cursor: pointer;
 }
 
-.forms__container--hide, .forms__container--hide * {
-    visibility: hidden;
-    height: 0;
+.forms__title:hover {
+    background-color: #aaa;
 }
 
-.forms__container--show, .forms__container--show * {
-    visibility: visible;
-    height: min-content;
+.forms__container--hide {
+    max-height: 0;
+    padding: 0;
+}
+
+.forms__container--show {
+    max-height: 20rem;
+    padding: 1rem;
 }
 
 .forms__title:first-child {
@@ -44,8 +50,9 @@ body {
 }
 
 .forms__form-container {
-    padding: 1rem;
-    transition: visibility 500ms ease-in-out;
+    transition: max-height 250ms linear, padding 250ms linear;
+    overflow: hidden;
+    border-radius: 1rem;
 }
 
 .forms form {
