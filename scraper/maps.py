@@ -95,7 +95,7 @@ def map_jumper_country_simple(row):
 
 def map_other_params_detail(row):
     return {
-        "rank": int(row[0]),
+        "rank": int(row[0]) if row[0] else "",
         "bib": int(row[1]),
         "total_points": float(row[-1])
     }
