@@ -81,13 +81,11 @@ h2 {
 .forms__container--hide {
     max-height: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 .forms__container--show {
     max-height: 100rem;
     padding: 1rem;
-    overflow: visible;
 }
 
 .forms__title:first-child {
@@ -98,11 +96,12 @@ h2 {
 }
 
 .forms__form-container {
-    transition: max-height 250ms linear, padding 250ms linear;
+    transition: max-height 500ms ease-in-out, padding 500ms ease-in-out;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     height: max-content;
+    overflow: hidden;
 }
 
 .forms__inputs-wrapper {
@@ -207,4 +206,47 @@ h2 {
     outline: none;
     color: white;
     background-color: cornflowerblue;
+}
+
+.download__placeholder {
+    display: flex;
+    padding: .5rem 1.5rem;
+    border: 2px solid yellowgreen;
+    color: darkgreen;
+    border-radius: 1rem;
+    width: 100%;
+    min-height: 4rem;
+    align-items: center;
+}
+
+.download__placeholder-label {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
+
+.download__loader {
+    height: 2rem;
+    aspect-ratio: 1/1;
+    animation: rotate 1s linear infinite;
+    margin-left: auto;
+}
+
+.download__placeholder--failed {
+    color: darkred;
+    border: 2px solid darkred;
+    background-color: indianred;
+}
+
+.download__failed-label {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+@keyframes rotate {
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
 }
