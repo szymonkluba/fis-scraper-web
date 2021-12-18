@@ -11,7 +11,7 @@ from django.http import HttpResponse, StreamingHttpResponse
 
 from . import constants as const, maps
 from .constants import EMPTY_JUMP_DETAILS
-from .models import Country, Jumper, Jump, Participant, ParticipantCountry
+from .models import Country, Jumper, Jump, Participant, ParticipantCountry, Race, Tournament
 from .sele import get_dynamic_content
 
 
@@ -196,7 +196,7 @@ def export_csv(queryset, output):
 def export_zip(files, filename):
     temp_file = io.BytesIO()
     with zipfile.ZipFile(
-        temp_file, "w", zipfile.ZIP_DEFLATED
+            temp_file, "w", zipfile.ZIP_DEFLATED
     ) as opened_zip:
         for file in files:
             file["data"].seek(0)
@@ -216,7 +216,6 @@ def export_zip(files, filename):
 
 
 def get_files_list(queryset_list, filenames):
-
     files_list = []
 
     for index, queryset in enumerate(queryset_list):
@@ -228,3 +227,27 @@ def get_files_list(queryset_list, filenames):
         files_list.append(file)
 
     return files_list
+
+
+def get_race(race_id, details):
+    try:
+        race = Race.objects.get(fis_id=race_id)
+    except Race.DoesNotExist:
+        try:
+            website = Website(race_id, details)
+        except RaceNotFound:
+            return HttpResponse(status=404)
+        tournament, _ = Tournament.objects.get_or_create(name=website.get_race_tournament())
+
+        race = Race.objects.create(
+            fis_id=race_id,
+            tournament=tournament,
+            place=website.get_race_place(),
+            date=website.get_date(),
+            kind=website.get_kind(),
+            hill_size=website.get_hill_size()
+        )
+
+        generate_participants(website, race)
+
+    return race
