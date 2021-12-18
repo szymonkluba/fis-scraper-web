@@ -29,43 +29,6 @@ def scrap_race(request):
 
 
 @csrf_exempt
-def scrap_races_list(request):
-    if request.method == "POST":
-        body = request.body.decode("utf-8")
-        body = json.loads(body)
-        race_ids = body.get("race_ids")
-        details = body.get("details", False)
-        if race_ids:
-            races = []
-            for race_id in race_ids:
-                race = get_race(race_id, details)
-                races.append(race)
-            data = serializers.serialize("json", races)
-            return JsonResponse(data, safe=False)
-        return HttpResponse(status=400)
-    return HttpResponse(status=405)
-
-
-@csrf_exempt
-def scrap_races_range(request):
-    if request.method == "POST":
-        body = request.body.decode("utf-8")
-        body = json.loads(body)
-        start = int(body.get("start"))
-        end = int(body.get("end")) + 1
-        details = body.get("details", False)
-        if start and end:
-            races = []
-            for race_id in range(start, end):
-                race = get_race(race_id, details)
-                races.append(race)
-            data = serializers.serialize("json", races)
-            return JsonResponse(data, safe=False)
-        return HttpResponse(status=400)
-    return HttpResponse(status=500)
-
-
-@csrf_exempt
 def download_csv(request, race_id):
     if race_id:
         race = Race.objects.get(pk=race_id)
@@ -88,3 +51,11 @@ def download_csv(request, race_id):
         ]
 
         return export_zip(get_files_list(queryset_list, filenames), filename)
+
+
+@csrf_exempt
+def download_all(request):
+    if request.method == "POST":
+        body = request.body.decode("utf-8")
+        body = json.loads(body)
+        race_ids = body.get("race_ids")

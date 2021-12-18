@@ -7,40 +7,46 @@ document.addEventListener("DOMContentLoaded", () => {
         const fisIDs = Array.from(fisIDInputs).map(input => input.value).filter(value => value > 0);
         console.log(fisIDs)
         event.preventDefault();
-        const url = "scrap_races_list/";
+        const url = "scrap_race/";
         const submitButton = document.getElementById("submit-list");
         submitButton.disabled = true;
         event.target.removeEventListener("submit", onSubmit);
+        const details = document.getElementById("details-single-race").checked;
 
-        const body = {
-            race_ids: fisIDs,
-            details: document.getElementById("details-list-race").checked,
-        }
+        for (const race_id of fisIDs) {
+            const body = {
+                race_id,
+                details
+            }
 
-        const config = {
-            method: "POST",
-            body: JSON.stringify(body),
-        }
+            const config = {
+                method: "POST",
+                body: JSON.stringify(body),
+            }
 
-        await fetch(url, config)
-            .then(response => response.json())
-            .then(data => {
-                const races = JSON.parse(data);
-                submitButton.disabled = false;
-                event.target.addEventListener("submit", onSubmit)
-
-                for (const race of races) {
-                    const race_id = race.pk;
+            await fetch(url, config)
+                .then(response => response.json())
+                .then(data => {
+                    const race = JSON.parse(data)[0];
+                    const raceID = race.pk;
+                    console.log(race)
+                    submitButton.disabled = false;
+                    event.target.addEventListener("submit", onSubmit)
                     const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
                     const container = document.getElementById("files-container");
                     const button = document.createElement("a");
+                    const inputID = document.createElement("input");
+                    inputID.setAttribute("type", "hidden");
+                    inputID.setAttribute("value", race_id);
+                    inputID.className = "download__ID";
                     button.innerHTML = race_name;
-                    button.href = `download/${race_id}/`;
+                    button.href = `download/${raceID}/`;
                     button.className = "download__link"
                     container.appendChild(button);
-                }
-            })
-            .catch(e => console.log(e))
+                    container.appendChild(inputID);
+                })
+                .catch(e => console.log(e))
+        }
     }
 
     const form = document.getElementById("form-list-races");

@@ -12,26 +12,26 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.disabled = true;
         event.target.removeEventListener("submit", onSubmit);
 
-        const body = {
-            start,
-            end,
-            details,
-        }
+        for (let race_id = start; race_id < end; race_id++) {
 
-        const config = {
-            method: "POST",
-            body: JSON.stringify(body),
-        }
+            const body = {
+                race_id,
+                details,
+            }
 
-        await fetch(url, config)
-            .then(response => response.json())
-            .then(data => {
-                const races = JSON.parse(data);
-                submitButton.disabled = false;
-                event.target.addEventListener("submit", onSubmit)
+            const config = {
+                method: "POST",
+                body: JSON.stringify(body),
+            }
 
-                for (const race of races) {
+            await fetch(url, config)
+                .then(response => response.json())
+                .then(data => {
+                    const race = JSON.parse(data)[0];
                     const race_id = race.pk;
+                    console.log(race)
+                    submitButton.disabled = false;
+                    event.target.addEventListener("submit", onSubmit)
                     const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
                     const container = document.getElementById("files-container");
                     const button = document.createElement("a");
@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     button.href = `download/${race_id}/`;
                     button.className = "download__link"
                     container.appendChild(button);
-                }
-            })
-            .catch(e => console.log(e))
+                })
+                .catch(e => console.log(e))
+        }
     }
 
     const form = document.getElementById("form-range-races");
