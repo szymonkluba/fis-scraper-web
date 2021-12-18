@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>FIS Scrapper</title>
-    <link href="{% static 'styles.css' %}" rel="stylesheet">
-    <script src="{% static 'scripts.js' %}"></script>
+    <link href="{% static 'styles\styles.css' %}" rel="stylesheet">
+    <script src="{% static 'scripts\toggle-forms.js' %}"></script>
+    <script src="{% static 'scripts\scrap-single-race.js' %}"></script>
 </head>
 <body>
 <h1>FIS Scraper</h1>
@@ -14,7 +15,7 @@
     <div class="forms__form-container forms__container--show">
         <form id="form-single-race">
             <label for="fis_id-single-race">FIS ID:</label>
-            <input id="fis_id-single-race" type="number"/>
+            <input id="fis_id-single-race" type="number" required/>
             <div>
                 <input type="checkbox" id="details-single-race" checked>
                 <label for="details-single-race">Detailed data (note that it may be not available for some
@@ -25,23 +26,25 @@
     </div>
     <h2 class="forms__title">Scrap listed IDs</h2>
     <div class="forms__form-container forms__container--hide">
-        <button class="forms__add-button"></button>
-        <form id="form-list-races">
-            <input class="forms__input-list" type="number">
-            <div>
-                <input type="checkbox" id="details-list-race">
-                <label for="details-list-race">Detailed data (note that it may be not available for some races)</label>
-            </div>
-            <input class="forms__submit-button" type="submit" value="Scrap!"/>
+        <button id="add-inputs" class="forms__add-button">Add</button>
+        <div id="inputs_wrapper" class="forms__inputs-wrapper">
+            <label for="race_id_1">1# FIS ID:</label>
+            <input id="race_id_1" class="forms__input-list" type="number" required>
+        </div>
+        <div>
+            <input type="checkbox" id="details-list-race">
+            <label for="details-list-race">Detailed data (note that it may be not available for some races)</label>
+        </div>
+        <input class="forms__submit-button" type="submit" value="Scrap!"/>
         </form>
     </div>
     <h2 class="forms__title">Scrap range of IDs</h2>
     <div class="forms__form-container forms__container--hide">
         <form id="form-range-races">
             <label for="from">From:</label>
-            <input id="from" class="forms__input-range" type="number">
+            <input id="from" class="forms__input-range" type="number" required>
             <label for="to">To:</label>
-            <input id="to" class="forms__input-range" type="number">
+            <input id="to" class="forms__input-range" type="number" required>
             <div>
                 <input type="checkbox" id="details-range-race">
                 <label for="details-range-race">Detailed data (note that it may be not available for some races)</label>
@@ -51,70 +54,5 @@
     </div>
 </section>
 <section id="content"></section>
-<!--<script>
-
-    let race_id;
-
-    const onSubmit = (event) => {
-        event.preventDefault();
-        const url = "scrap_race/";
-        const submitButton = document.getElementById("submit");
-        submitButton.disabled = true;
-        event.target.removeEventListener("submit", onSubmit);
-
-        const body = {
-            race_id: fisIDInput.value,
-            details: document.getElementById("details-single-race").checked,
-        }
-
-        const config = {
-            method: "POST",
-            body: JSON.stringify(body),
-        }
-
-        fetch(url, config)
-            .then(response => response.json())
-            .then(data => {
-                const race = JSON.parse(data)[0];
-                race_id = race.pk;
-                console.log(race)
-                submitButton.disabled = false;
-                event.target.addEventListener("submit", onSubmit)
-                const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date}`
-                const container = document.getElementById("content");
-                const button = document.createElement("a");
-                button.innerHTML = race_name;
-                button.href = `download/${race_id}/`;
-                button.className = "download__link"
-                container.appendChild(button);
-            })
-            .catch(e => console.log(e))
-    }
-
-    const form = document.getElementById("form-single-race");
-    const fisIDInput = document.getElementById("fis_id-single-race");
-
-
-    const showForms = (event) => {
-        event.preventDefault()
-        const formContainers = document.getElementsByClassName("forms__form-container")
-        for (let i = 0; i < formContainers.length; i++) {
-            formContainers[i].classList.replace("forms__container&#45;&#45;show", "forms__container&#45;&#45;hide")
-        }
-        event.target.nextElementSibling.classList.replace("forms__container&#45;&#45;hide", "forms__container&#45;&#45;show")
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const formHeaders = document.querySelectorAll(".forms__title");
-        console.log(formHeaders)
-        for (let i = 0; i < formHeaders.length; i++) {
-            formHeaders[i].addEventListener("click", showForms);
-        }
-    })
-
-    form.addEventListener("submit", onSubmit)
-
-
-</script>-->
 </body>
 </html>

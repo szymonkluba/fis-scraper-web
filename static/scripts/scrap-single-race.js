@@ -1,6 +1,3 @@
-let race_id;
-
-
 document.addEventListener("DOMContentLoaded", () => {
 
     const fisIDInput = document.getElementById("fis_id-single-race");
@@ -26,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(data => {
                 const race = JSON.parse(data)[0];
-                race_id = race.pk;
+                const race_id = race.pk;
                 console.log(race)
                 submitButton.disabled = false;
                 event.target.addEventListener("submit", onSubmit)
@@ -43,23 +40,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("form-single-race");
     form.addEventListener("submit", onSubmit)
-
-    const showForms = (event) => {
-        event.preventDefault()
-        const formContainers = document.getElementsByClassName("forms__form-container")
-        for (let i = 0; i < formContainers.length; i++) {
-            formContainers[i].classList.replace("forms__container--show", "forms__container--hide")
-        }
-        event.target.nextElementSibling.classList.replace("forms__container--hide", "forms__container--show")
-    }
-
-    const formHeaders = document.querySelectorAll(".forms__title");
-    console.log(formHeaders)
-    for (let i = 0; i < formHeaders.length; i++) {
-        formHeaders[i].addEventListener("click", showForms);
-    }
-
 });
-
-
-
