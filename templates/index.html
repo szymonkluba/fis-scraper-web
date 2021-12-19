@@ -12,18 +12,20 @@
     <script src="{% static 'scripts\scrap-races-list.js' %}" type="module"></script>
     <script src="{% static 'scripts\scrap-races-range.js' %}" type="module"></script>
     <script src="{% static 'scripts\scrap-race.js' %}" type="module"></script>
+    <script src="{% static 'scripts\download-all.js' %}"></script>
+    <script src="{% static 'scripts\navigation.js' %}"></script>
 </head>
 <body>
 <header>
     <nav>
-        <a href="#">FIS scraper</a>
-        <a href="#">Archive</a>
+        <a href="#" id="scraper-link">FIS scraper</a>
+        <a href="#" id="archive-link">Archive</a>
     </nav>
 </header>
 <main>
     <div id="scraper">
-        <h1>FIS Scraper</h1>
-        <section class="forms">
+        <h1 id="title">FIS Scraper</h1>
+        <section class="forms forms--show" id="forms">
 
             <h2 class="forms__title">Scrap single race</h2>
 
@@ -94,7 +96,8 @@
 
         </section>
         <section id="files">
-            <h2>Your files</h2>
+            <h2 id="files-title">Your files</h2>
+            <a href="#" class="download__download-all" id="download-all">Download all</a>
             <div id="files-container"></div>
         </section>
     </div>

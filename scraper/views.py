@@ -59,3 +59,23 @@ def download_all(request):
         body = request.body.decode("utf-8")
         body = json.loads(body)
         race_ids = body.get("race_ids")
+        if race_ids:
+            queryset_list = []
+            filenames = []
+            for race_id in race_ids:
+                race = Race.objects.get(fis_id=race_id)
+                filename = str(race).replace(" ", "_")
+                filenames.append(filename)
+                queryset = Participant.objects.filter(race=race)
+                queryset_list.append(queryset)
+
+            return export_zip(get_files_list(queryset_list, filenames), f"{race_ids[0]}-{race_ids[-1]}")
+        return HttpResponse(status=400)
+    return HttpResponse(status=405)
+
+
+@csrf_exempt
+def archive(request):
+    races = Race.objects.all()
+    data = serializers.serialize("json", races)
+    return JsonResponse(data, safe=False)

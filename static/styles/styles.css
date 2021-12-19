@@ -10,7 +10,6 @@ body {
     background-color: aliceblue;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 *, *:before, *:after {
@@ -31,10 +30,30 @@ nav {
     margin-inline: auto;
     width: 100%;
     max-width: 40rem;
-    padding-block: 2rem;
+    padding-block: 1rem;
+    display: flex;
+    gap: 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #555;
+}
+
+nav a {
+    appearance: none;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #aaa;
+    transform: scale(1.1);
+}
+
+nav a:visited {
+    color: #555;
 }
 
 footer {
+    margin-top: auto;
     display: flex;
 }
 
@@ -50,9 +69,17 @@ h2 {
 }
 
 #scraper {
-    margin-inline: auto;
+    margin: 0 auto auto;
     max-width: 40rem;
     width: 100%;
+}
+
+.forms--show {
+    display: block;
+}
+
+.forms--hide {
+    display: none;
 }
 
 .forms {
@@ -165,6 +192,7 @@ h2 {
 }
 
 #files {
+    position: relative;
     box-sizing: border-box;
     padding: 1rem;
     margin-block: 1rem;
@@ -240,6 +268,20 @@ h2 {
 .download__failed-label {
     font-weight: 700;
     font-size: 1.5rem;
+}
+
+.download__download-all {
+    position: absolute;
+    right: .75rem;
+    top: .75rem;
+    appearance: none;
+    font-size: .876rem;
+    color: inherit;
+    display: inline-block;
+}
+
+.download__download-all:hover {
+    color: #555555;
 }
 
 @keyframes rotate {

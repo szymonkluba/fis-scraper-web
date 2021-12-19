@@ -211,7 +211,7 @@ def export_zip(files, filename):
         content_type="application/zip",
     )
 
-    response["Content-Disposition"] = f"attachment; filename={filename}"
+    response["Content-Disposition"] = f"attachment; filename={filename}.zip"
     return response
 
 
