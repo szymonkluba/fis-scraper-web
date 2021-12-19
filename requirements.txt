@@ -11,6 +11,7 @@ dj-database-url==0.5.0
 Django==4.0
 django-cors-headers==3.10.1
 django-heroku==0.0.0
+gunicorn
 h11==0.12.0
 idna==3.3
 lxml==4.6.4
