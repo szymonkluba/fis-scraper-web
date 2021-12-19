@@ -170,7 +170,7 @@ def export_csv(queryset, output):
     headers = []
     for field_name in [f.name for f in model_fields]:
         if field_name == "jump_1" or field_name == "jump_2":
-            headers.extend([f.name for f in Jump._meta.fields])
+            headers.extend([f.name for f in Jump._meta.fields if f.name != "id"])
         else:
             headers.append(field_name)
     writer = csv.writer(output, dialect="excel")
