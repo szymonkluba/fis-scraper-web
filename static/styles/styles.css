@@ -41,11 +41,13 @@ nav {
 nav a {
     appearance: none;
     text-decoration: none;
+    color: inherit;
 }
 
 nav a:hover {
     color: #aaa;
     transform: scale(1.1);
+    box-shadow: 4px 4px 69px -15px rgba(0,0,0,0.75);
 }
 
 nav a:visited {
