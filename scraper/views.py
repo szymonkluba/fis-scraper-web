@@ -5,8 +5,8 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import Tournament, Race, Participant, ParticipantCountry
-from .utils import Website, generate_participants, RaceNotFound, export_csv, export_zip, get_files_list
+from .models import Race, Participant, ParticipantCountry
+from .utils import export_csv, export_zip, get_files_list, get_race
 
 
 def home(request):
@@ -18,35 +18,11 @@ def scrap_race(request):
     if request.method == "POST":
         body = request.body.decode("utf-8")
         body = json.loads(body)
-
         race_id = body.get("race_id")
-        details = body.get("details")
-        print(details)
-
+        details = body.get("details", False)
         if race_id:
-
-            try:
-                race = Race.objects.get(fis_id=race_id)
-            except Race.DoesNotExist:
-                try:
-                    website = Website(race_id, details)
-                except RaceNotFound:
-                    return HttpResponse(status=404)
-                tournament, _ = Tournament.objects.get_or_create(name=website.get_race_tournament())
-
-                race = Race.objects.create(
-                    fis_id=race_id,
-                    tournament=tournament,
-                    place=website.get_race_place(),
-                    date=website.get_date(),
-                    kind=website.get_kind(),
-                    hill_size=website.get_hill_size()
-                )
-
-                generate_participants(website, race)
-
+            race = get_race(race_id, details)
             data = serializers.serialize("json", [race])
-
             return JsonResponse(data, safe=False)
         return HttpResponse(status=400)
     return HttpResponse(status=405)
@@ -59,7 +35,6 @@ def download_csv(request, race_id):
         participants = Participant.objects.prefetch_related("jump_1", "jump_2").filter(race=race)
         filename = str(race).replace(" ", "_")
         if race.kind != "team":
-
             response = HttpResponse(content_type='text/csv')
             response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
 
@@ -76,3 +51,31 @@ def download_csv(request, race_id):
         ]
 
         return export_zip(get_files_list(queryset_list, filenames), filename)
+
+
+@csrf_exempt
+def download_all(request):
+    if request.method == "POST":
+        body = request.body.decode("utf-8")
+        body = json.loads(body)
+        race_ids = body.get("race_ids")
+        if race_ids:
+            queryset_list = []
+            filenames = []
+            for race_id in race_ids:
+                race = Race.objects.get(fis_id=race_id)
+                filename = str(race).replace(" ", "_")
+                filenames.append(filename)
+                queryset = Participant.objects.filter(race=race)
+                queryset_list.append(queryset)
+
+            return export_zip(get_files_list(queryset_list, filenames), f"{race_ids[0]}-{race_ids[-1]}")
+        return HttpResponse(status=400)
+    return HttpResponse(status=405)
+
+
+@csrf_exempt
+def archive(request):
+    races = Race.objects.all()
+    data = serializers.serialize("json", races)
+    return JsonResponse(data, safe=False)
