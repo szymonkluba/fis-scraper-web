@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     link.href = url;
                     link.click();
                     URL.revokeObjectURL(url);
+                    filesContainer.innerHTML = "";
                 }).catch(e => console.log(e));
             }
         }

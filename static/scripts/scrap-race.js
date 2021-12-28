@@ -1,3 +1,5 @@
+import { generateDownloadButton } from "./generate-download-button.js";
+
 export const scrapRace = async (raceID, details) => {
     const body = {
         race_id: raceID,
@@ -29,16 +31,7 @@ export const scrapRace = async (raceID, details) => {
         .then(response => response.json())
         .then(data => {
             const race = JSON.parse(data)[0];
-            const primaryKey = race.pk;
-            const race_name = `${race.fields.place} ${race.fields.hill_size} ${race.fields.date.slice(0, 10)}`
-            const button = document.createElement("a");
-            const inputID = document.createElement("input");
-            inputID.setAttribute("type", "hidden");
-            inputID.setAttribute("value", raceID);
-            inputID.className = "download__ID";
-            button.innerHTML = race_name;
-            button.href = `download/${primaryKey}/`;
-            button.className = "download__link"
+            const { inputID, button } = generateDownloadButton(race);
             container.appendChild(button);
             container.appendChild(inputID);
             filePlaceholder.remove();

@@ -24,6 +24,7 @@ class Race(models.Model):
     date = models.DateField()
     kind = models.CharField(max_length=50, choices=RACE_KINDS)
     hill_size = models.CharField(max_length=10)
+    details = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.place} {self.hill_size} {self.date}"
