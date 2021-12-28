@@ -105,9 +105,9 @@ def generate_team_participants(website, race):
                 jump1_data, jump2_data = maps.map_team_jumps(entries)
                 jump1, jump2 = None, None
                 if jump1_data:
-                    jump1, _ = Jump.objects.get_or_create(**jump1_data)
+                    jump1 = Jump.objects.create(**jump1_data)
                 if jump2_data:
-                    jump2, _ = Jump.objects.get_or_create(**jump2_data)
+                    jump2 = Jump.objects.create(**jump2_data)
                 Participant.objects.get_or_create(race=race,
                                                   jumper=jumper,
                                                   jump_1=jump1,
@@ -126,10 +126,10 @@ def generate_detail_participants(website, race):
                                                             defaults={"nation": country})
                 other_params = maps.map_other_params_detail(entries)
             if index == 1:
-                jump_1, _ = Jump.objects.get_or_create(**maps.map_detailed_jump(entries))
+                jump_1 = Jump.objects.create(**maps.map_detailed_jump(entries))
                 diff = maps.map_diff_detail(entries).get("diff")
             if index == 2:
-                jump_2, _ = Jump.objects.get_or_create(**maps.map_detailed_jump(entries))
+                jump_2 = Jump.objects.create(**maps.map_detailed_jump(entries))
             participant, _ = Participant.objects.update_or_create(jumper=jumper, race=race,
                                                                   defaults={"jump_1": jump_1, "jump_2": jump_2,
                                                                             "diff": diff, **other_params})
@@ -147,9 +147,9 @@ def generate_simple_participants(website, race):
                                                         defaults={"nation": country, **jumper_details})
             jump_1_details, jump_2_details = maps.map_simple_jump(entries)
             if jump_1_details:
-                jump_1, _ = Jump.objects.get_or_create(**jump_1_details, **EMPTY_JUMP_DETAILS)
+                jump_1 = Jump.objects.create(**jump_1_details, **EMPTY_JUMP_DETAILS)
             if jump_2_details:
-                jump_2, _ = Jump.objects.get_or_create(**jump_2_details, **EMPTY_JUMP_DETAILS)
+                jump_2 = Jump.objects.create(**jump_2_details, **EMPTY_JUMP_DETAILS)
             Participant.objects.get_or_create(jumper=jumper, jump_1=jump_1, jump_2=jump_2, race=race,
                                               **maps.map_other_params_simple(entries))
 
@@ -211,7 +211,7 @@ def export_zip(files, filename):
         content_type="application/zip",
     )
 
-    response["Content-Disposition"] = f"attachment; filename={filename}.zip"
+    response["Content-Disposition"] = f'attachment; filename="{filename}.zip"'
     return response
 
 
@@ -231,7 +231,7 @@ def get_files_list(queryset_list, filenames):
 
 def get_race(race_id, details):
     try:
-        race = Race.objects.get(fis_id=race_id)
+        race = Race.objects.get(fis_id=race_id, details=details)
     except Race.DoesNotExist:
         try:
             website = Website(race_id, details)
@@ -245,9 +245,19 @@ def get_race(race_id, details):
             place=website.get_race_place(),
             date=website.get_date(),
             kind=website.get_kind(),
-            hill_size=website.get_hill_size()
+            hill_size=website.get_hill_size(),
+            details=details
         )
 
         generate_participants(website, race)
 
     return race
+
+
+def delete_race(race):
+    for participant in race.participant_set.all():
+        if participant.jump_1:
+            participant.jump_1.delete()
+        if participant.jump_2:
+            participant.jump_2.delete()
+    race.delete()
