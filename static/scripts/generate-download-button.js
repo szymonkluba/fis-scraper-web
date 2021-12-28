@@ -9,6 +9,7 @@ export const generateDownloadButton = (race) => {
     inputID.setAttribute("type", "hidden");
     inputID.setAttribute("value", primaryKey);
     inputID.className = "download__ID";
+    inputID.id = primaryKey;
 
     button.innerHTML = race_name;
     button.href = `#`;

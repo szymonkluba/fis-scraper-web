@@ -16,10 +16,12 @@ export const download = async (event) => {
         .then(file => {
                     const url = URL.createObjectURL(file)
                     const link = document.createElement("a");
+                    const inputID = document.getElementById(raceID)
                     link.href = url;
                     link.click();
                     URL.revokeObjectURL(url);
                     event.target.remove();
+                    inputID.remove();
         })
         .catch(e => console.error(e))
 }
