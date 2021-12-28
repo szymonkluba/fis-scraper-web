@@ -1,3 +1,5 @@
+import { download } from "./download.js";
+
 export const scrapRace = async (raceID, details) => {
     const body = {
         race_id: raceID,
@@ -37,7 +39,9 @@ export const scrapRace = async (raceID, details) => {
             inputID.setAttribute("value", raceID);
             inputID.className = "download__ID";
             button.innerHTML = race_name;
-            button.href = `download/${primaryKey}/`;
+            button.href = `#`;
+            button.dataset.raceID = primaryKey;
+            button.addEventListener("click", download)
             button.className = "download__link"
             container.appendChild(button);
             container.appendChild(inputID);

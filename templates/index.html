@@ -14,6 +14,7 @@
     <script src="{% static 'scripts\scrap-race.js' %}" type="module"></script>
     <script src="{% static 'scripts\download-all.js' %}"></script>
     <script src="{% static 'scripts\navigation.js' %}"></script>
+    <script src="{% static 'scripts\download.js' %}" type="module"></script>
 </head>
 <body>
 <header>
@@ -37,7 +38,7 @@
                     <input id="fis_id-single-race" type="number" required/>
 
                     <div>
-                        <input type="checkbox" id="details-single-race" checked>
+                        <input type="checkbox" id="details-single-race">
                         <label for="details-single-race">Detailed data (note that it may be not available for some
                             races)</label>
                     </div>
@@ -62,7 +63,7 @@
                     </div>
 
                     <div>
-                        <input type="checkbox" id="details-list-race" checked>
+                        <input type="checkbox" id="details-list-race">
                         <label for="details-list-race">Detailed data (note that it may be not available for some
                             races)</label>
                     </div>
@@ -84,7 +85,7 @@
                     <input id="to" class="forms__input-range" type="number" required>
 
                     <div>
-                        <input type="checkbox" id="details-range-race" checked>
+                        <input type="checkbox" id="details-range-race">
                         <label for="details-range-race">Detailed data (note that it may be not available for some
                             races)</label>
                     </div>

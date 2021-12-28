@@ -2,7 +2,7 @@ import json
 
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Race, Participant, ParticipantCountry
@@ -29,28 +29,40 @@ def scrap_race(request):
 
 
 @csrf_exempt
-def download_csv(request, race_id):
-    if race_id:
-        race = Race.objects.get(pk=race_id)
-        participants = Participant.objects.prefetch_related("jump_1", "jump_2").filter(race=race)
-        filename = str(race).replace(" ", "_")
-        if race.kind != "team":
-            response = HttpResponse(content_type='text/csv')
-            response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
+def download(request):
+    if request.method == "POST":
+        body = request.body.decode("utf-8")
+        body = json.loads(body)
+        race_id = body.get("race_id")
+        if race_id:
+            race = get_object_or_404(Race, pk=race_id)
+            participants = Participant.objects.prefetch_related("jump_1", "jump_2").filter(race=race)
+            filename = str(race).replace(" ", "_")
+            if race.kind != "team":
+                response = HttpResponse(content_type='text/csv')
+                response['Content-Disposition'] = f'attachment; filename="{filename}.csv"'
 
-            return export_csv(participants, response)
+                response = export_csv(participants, response)
+                race.delete()
 
-        participants_countries = ParticipantCountry.objects.filter(race=race)
-        filenames = [
-            filename + "_countries",
-            filename + "_jumpers",
-        ]
-        queryset_list = [
-            participants_countries,
-            participants,
-        ]
+                return response
 
-        return export_zip(get_files_list(queryset_list, filenames), filename)
+            participants_countries = ParticipantCountry.objects.filter(race=race)
+            filenames = [
+                filename + "_countries",
+                filename + "_jumpers",
+            ]
+            queryset_list = [
+                participants_countries,
+                participants,
+            ]
+
+            response = export_zip(get_files_list(queryset_list, filenames), filename)
+            race.delete()
+
+            return response
+        return HttpResponse(status=400)
+    return HttpResponse(status=405)
 
 
 @csrf_exempt
@@ -69,7 +81,12 @@ def download_all(request):
                 queryset = Participant.objects.filter(race=race)
                 queryset_list.append(queryset)
 
-            return export_zip(get_files_list(queryset_list, filenames), f"{race_ids[0]}-{race_ids[-1]}")
+            response = export_zip(get_files_list(queryset_list, filenames), f"{race_ids[0]}-{race_ids[-1]}")
+
+            for race_id in race_ids:
+                Race.objects.get(fis_id=race_id).delete()
+
+            return response
         return HttpResponse(status=400)
     return HttpResponse(status=405)
 
